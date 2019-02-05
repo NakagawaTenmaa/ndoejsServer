@@ -20,27 +20,17 @@ const wss = new WebSocketServer({
   port: 8080
 });
 
-// 接続時
-/*
-wss.on('connection',
- (ws) => ws.on('message', (message) => console.log('received: %s', message))
- );
-*/
-
 wss.on('connection',function(ws) {
 	let player = null;
 	// 受信時
 		ws.on('message',function(message){
 		console.log('received: %s', message);
+		// プレイヤーの作成
+		player = new Player();
+		players[player.id] = player;
+
 		wss.clients.forEach(function(client){
 			client.send(message);
 		});
 	});
-	/*
-	// プレイヤーの作成
-	ws.on('game-start',(consig) => {
-		player = new Player();
-		players[player.id] = player;
-	});
-	*/	
 });
