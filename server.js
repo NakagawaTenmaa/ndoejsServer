@@ -22,11 +22,11 @@ wss.on('connection',function(ws) {
 	player = new Player();
 	players[player.id] = player;
 
-
 	// 入室
 	wss.clients.forEach(function(client){
 		client.send(JSON.stringify(player));
 	});
+
 
 		// 受信時
 		ws.on('message',function(message){
