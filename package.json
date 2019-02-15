@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "mysql": "github:mysqljs/mysql",
+    "mysqljs": "0.0.2-security",
     "ws": "^6.1.3"
   }
 }

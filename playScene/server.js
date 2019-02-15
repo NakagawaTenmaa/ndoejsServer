@@ -1,15 +1,10 @@
 
-class Player{
-	constructor(){
-		this.id = Math.floor(Math.random()*1000000000);
-		this.x = 0;
-		this.y = 0;
-		this.z = 0;
-	}
-};
+// プレイヤークラス
+var playerScript = require("player.js");
 
 
 let players = {};
+
 
 
 const WebSocketServer = require('ws').Server;
@@ -30,18 +25,13 @@ wss.on('connection',function(ws) {
 
 		// 受信時
 		ws.on('message',function(message){
-		console.log('received: %s', message);
+		//console.log('received: %s', message);
 		var json = JSON.parse(message);
 		
 		if(!players[player.id]){
 			// Idの中身がない時強制終了
 			return;
 		}
-
-		//Json作成
-		//JSON.stringify
-		//Json分解
-		//JSON.parse
 
 		// サーバー側でのデータ管理用		
 		players[json.id].x = json.position.x;
