@@ -3,23 +3,20 @@
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'my',
+  user     : 'ten',
   database : 'nodejs_mmo'
 });
 
 // 接続開始
 connection.connect();
-let positionX = 0;
-let positionY = 0;
 
-connection.query('SELECT * from player;',function(err , rows, fields){
+connection.query('SELECT * from users;',function(err , rows, fields){
 	if(err) {console.log('err : ' + err);}
 
-	console.log('posx : ' + rows[0].posx);
-	console.log('posy : ' + rows[0].posy);
-
-	positionX = rows[0].posx;
-	positionY = rows[0].posy;
+	console.log('posx : ' + rows[0].user_id);
+	console.log('posy : ' + rows[0].user_name);
+	console.log('posy : ' + rows[0].password);
+	
 });
 
 
