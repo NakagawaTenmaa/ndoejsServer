@@ -16,6 +16,21 @@ var connection = mysql.createConnection({
 			  
 });
 
+// ユーザー作成のResponse
+class CreateUserResponse{
+	constructor(){
+		this.command = 103;
+		this.msg = "";
+	}
+};
+
+// ログインしたときのResponse
+class LoginUserResponse{
+	constructor(){
+		this.command = 104;
+		this.msg = "";
+	}
+};
 
 // wabソケットの設定
 const WebSocketServer = require('ws').Server;
@@ -54,18 +69,23 @@ wss.on('connection',function(ws) {
 			// ユーザーの確認
 			connection.query(queryStr,function(err , rows , fields){
 				if(err) {console.log('err : ' + err );}
-
-				try{
-					// 復号化
-					var decipher = crypto.createDecipher('aes192', lockpass);
-					decipher.update(rows[0].password, 'hex', 'utf8');
-					var dec = decipher.final('utf8');
-			    	if(dec == json.pass && rows[0].user_name){
-					console.log("データが見つかりました");	
-					} else {console.log("データがありません");}
-				} catch (e){
-					console.log("データがありません");
-				}
+					let msg = new LoginUserResponse();
+					try{						// 復号化
+						var decipher = crypto.createDecipher('aes192', lockpass);
+						decipher.update(rows[0].password, 'hex', 'utf8');
+						var dec = decipher.final('utf8');
+				    	if(dec == json.pass && rows[0].user_name){
+						console.log("データが見つかりました");	
+						msg.msg = "OK";
+						let jsonStr = JSON.stringify(msg);
+						ws.send(jsonStr);
+						} else {console.log("データがありません");}
+					} catch (e){
+						console.log("データがありません");
+						msg.msg = "NO";
+						let jsonStr = JSON.stringify(msg);
+						ws.send(jsonStr);
+					}
 			});
 		
 		}
