@@ -5,7 +5,9 @@
 // パケット
 //var packetScrion = require("packet.js");
 var crypto = require("crypto");
+let now = new Date();
 let lockpass = 'abcdef';
+
 
 // 接続DB詳細
 var mysql      = require('mysql');
@@ -13,7 +15,6 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'ten',
   database : 'nodejs_mmo'
-			  
 });
 
 // ユーザー作成のResponse
@@ -53,8 +54,8 @@ wss.on('connection',function(ws) {
 				let cipher = crypto.createCipher('aes192' , lockpass);
 				cipher.update(json.pass,'utf8','hex');
 				let pass  = cipher.final('hex');
-
-				connection.query('INSERT INTO `users`(`user_name`,`password` ) VALUES ("' + json.username +'","' + pass + '")',function(err , rows){
+				let today = Date.today();
+				connection.query('INSERT INTO `users`(`user_name`,`password`) VALUES ("' + json.username +'","' + pass + '")',function(err , rows){
 				// エラー確認
 				if(err) {console.log('err : ' + err);}
 			});
@@ -70,7 +71,8 @@ wss.on('connection',function(ws) {
 			connection.query(queryStr,function(err , rows , fields){
 				if(err) {console.log('err : ' + err );}
 					let msg = new LoginUserResponse();
-					try{						// 復号化
+					try{						
+						// 復号化
 						var decipher = crypto.createDecipher('aes192', lockpass);
 						decipher.update(rows[0].password, 'hex', 'utf8');
 						var dec = decipher.final('utf8');
