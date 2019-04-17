@@ -32,7 +32,7 @@ wss.on('connection',function(ws) {
 				let msgData = new ChatResponse();
 				msgData.msg = json.msg;
 				client.send(JSON.stringify(msgData));
-				console.log("送信メッセージ : " msgData.msg);
+				console.log("送信メッセージ : " + msgData.msg);
 			});
 		}
 	});
