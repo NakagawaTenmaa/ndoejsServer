@@ -88,11 +88,8 @@ wss.on('connection',function(ws) {
 						let jsonStr = JSON.stringify(msg);
 						ws.send(jsonStr);
 					}
-			});
-		
-		}
-	
-
+				});
+			}	
 		}
 	});
 });
